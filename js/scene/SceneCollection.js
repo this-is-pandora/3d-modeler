@@ -1,0 +1,1 @@
+// allows you to group different scene subjects together into a collection
