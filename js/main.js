@@ -1,13 +1,18 @@
 import SceneManager from './scene/SceneManager';
-import Cube from './meshes/primitives/cube';
 import '../style.css';
 import * as THREE from 'three';
+import * as OBJS from './meshes/primitives';
 
 const canvas = document.getElementById('canvas');
 const sceneManager = new SceneManager(canvas);
+//window.addEventListener('resize', sceneManager.onWindowResize());
 
-var cube = new Cube();
+// add objects
+var cube = new OBJS.Cube();
+var grid = new THREE.GridHelper(100, 10);
+
 sceneManager.addObject(cube);
+sceneManager.scene.add(grid);
 
 function animate() {
     requestAnimationFrame(animate);

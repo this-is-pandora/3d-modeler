@@ -2,8 +2,8 @@ import Mesh from '../mesh';
 import { TetrahedronGeometry } from 'three';
 
 class Pyramid extends Mesh {
-    constructor() {
-        super(new TetrahedronGeometry(10, 0));
+    constructor(radius = 10, detail = 0) {
+        super(new TetrahedronGeometry(radius, detail));
     }
 }
 

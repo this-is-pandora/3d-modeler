@@ -9,7 +9,6 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 * - update each frame
 * - etc.
 */
-
 class SceneManager {
     constructor(canvas) {
         if (SceneManager._instance) {
@@ -45,7 +44,9 @@ class SceneManager {
     }
     // called everytime the window is resized
     onWindowResize() {
-
+        this.camera.aspect = window.innerWidth / window.innerHeight;
+        this.camera.updateProjectionMatrix();
+        this.renderer.setSize(window.innerWidth, innerHeight);
     }
 
 }
