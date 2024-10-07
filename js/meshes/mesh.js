@@ -2,7 +2,7 @@ import * as THREE from 'three';
 
 class Mesh {
 
-    constructor(geometry, material = new THREE.MeshBasicMaterial({ color: 0x00ff00 })) {
+    constructor(geometry, material = new THREE.MeshLambertMaterial({ color: 0xD3D3D3 })) {
         this.geometry = geometry;
         this.material = material;
         this.mesh = new THREE.Mesh(this.geometry, this.material);
