@@ -4,10 +4,13 @@ import { OutlinePass, RenderPass } from 'three/examples/jsm/Addons.js';
 import { EffectComposer } from 'three/examples/jsm/Addons.js';
 import { ShaderPass } from 'three/examples/jsm/Addons.js';
 import { FXAAShader } from 'three/examples/jsm/Addons.js';
+import TransformController from './TransformController';
 
 class PostProcessor {
     constructor(renderer, camera, scene) {
         this.raycaster = new Raycaster();
+        this.transformControls = new TransformController(scene, camera, renderer);
+
         this.selectedObject = null;
         this.composer = new EffectComposer(renderer);
         this.renderPass = new RenderPass(scene, camera);
@@ -33,6 +36,11 @@ class PostProcessor {
         this.composer.addPass(this.effectFXAA);
     }
 
+    setHighlightColor(color) {
+        this.outlinePass.visibleEdgeColor.set(color); // set basic edge color
+        this.outlinePass.hiddenEdgeColor.set(color);
+    }
+
     setSelectedObject(object) {
         this.selectedObject = object;
         this.outlinePass.selectedObjects = [this.selectedObject];
@@ -52,10 +60,15 @@ class PostProcessor {
         var intersects = this.raycaster.intersectObjects(objects, true);
         if (intersects.length > 0) {
             this.selectedObject = intersects[0].object
-            this.outlinePass.selectedObjects = [this.selectedObject];
+            if (this.selectedObject.isObject3D) {
+                this.outlinePass.selectedObjects = [this.selectedObject];
+                this.transformControls.attachObject(this.selectedObject);
+            }
+
         } else {
             this.selectedObject = null
             this.outlinePass.selectedObjects = [];
+            this.transformControls.detachObject();
         }
     }
 }

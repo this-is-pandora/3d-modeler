@@ -20,7 +20,7 @@ class SceneManager {
         this.canvas = canvas;
         // set up scene
         this.scene = new THREE.Scene();
-        this.sceneSubjects = new Array();
+        //this.sceneSubjects = new Array();
         // set up camera
         this.camera = new THREE.PerspectiveCamera(75, window.innerWidth /
             window.innerHeight, 0.1, 1000
@@ -37,7 +37,6 @@ class SceneManager {
         // controls for moving and rotating the camera
         this.controls = new OrbitControls(this.camera, this.renderer.domElement);
         // responds to mouse clicks to select objects
-        this.raycaster = new THREE.Raycaster();
         this.objects = [];
         // for post-processing
         this.postProcessor = new PostProcessor(this.renderer, this.camera, this.scene);
