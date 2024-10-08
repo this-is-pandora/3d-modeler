@@ -4,7 +4,8 @@
 */
 class SceneSubject {
     // subject could be a mesh, lighting object, etc.
-    constructor(subject) {
+    constructor(id, subject) {
+        this.id = id;
         this.subject = subject;
     }
 

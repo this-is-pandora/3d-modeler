@@ -1,4 +1,6 @@
+//import GUI from '../gui/gui';
 import * as THREE from 'three';
+import PostProcessor from '../gui/PostProcessor';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 /* 
@@ -34,12 +36,17 @@ class SceneManager {
         this.renderer.setSize(window.innerWidth, window.innerHeight);
         // controls for moving and rotating the camera
         this.controls = new OrbitControls(this.camera, this.renderer.domElement);
+        // responds to mouse clicks to select objects
+        this.raycaster = new THREE.Raycaster();
         this.objects = [];
+        // for post-processing
+        this.postProcessor = new PostProcessor(this.renderer, this.camera, this.scene);
     }
 
     update() {
         this.controls.update();
-        this.renderer.render(this.scene, this.camera);
+        this.postProcessor.composer.render();
+        //this.renderer.render(this.scene, this.camera);
     }
 
     addObject(object, x = 0.0, y = 0.0, z = 0.0) {
@@ -48,6 +55,7 @@ class SceneManager {
         this.objects.push(mesh);
         this.scene.add(mesh);
     }
+
     // called everytime the window is resized
     onWindowResize() {
         this.camera.aspect = window.innerWidth / window.innerHeight;
@@ -56,17 +64,7 @@ class SceneManager {
     }
 
     onMouseClick(e) {
-        var mousePointer = new THREE.Vector3(
-            (e.clientX / window.innerWidth) * 2 - 1,
-            -(e.clientY / window.innerHeight) * 2 + 1,
-            0.5
-        );
-        const raycaster = new THREE.Raycaster();
-        raycaster.setFromCamera(mousePointer, this.camera);
-        var intersects = raycaster.intersectObjects(this.objects, true);
-        if (intersects.length > 0) {
-            intersects[0].object.material.emissive.setRGB(.5, .5, 0);
-        }
+        this.postProcessor.selectObject(e, this.camera, this.objects);
     }
 
 }

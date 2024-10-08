@@ -11,6 +11,8 @@ class Mesh {
     getMesh() {
         return this.mesh;
     }
+
+
 }
 
 export default Mesh;
