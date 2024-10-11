@@ -5,11 +5,11 @@ import { EffectComposer } from 'three/examples/jsm/Addons.js';
 import { ShaderPass } from 'three/examples/jsm/Addons.js';
 import { FXAAShader } from 'three/examples/jsm/Addons.js';
 import TransformController from './TransformController';
+import { textureLoad } from 'three/examples/jsm/nodes/Nodes.js';
 
 class PostProcessor {
     constructor(renderer, camera, scene) {
         this.raycaster = new Raycaster();
-        this.transformControls = new TransformController(scene, camera, renderer);
 
         this.selectedObject = null;
         this.composer = new EffectComposer(renderer);
@@ -19,7 +19,10 @@ class PostProcessor {
             scene,
             camera
         );
-
+        this.effectFXAA = new ShaderPass(FXAAShader);
+    }
+    initializePostProcessor() {
+        // outline pass
         this.outlinePass.edgeStrength = 3.0;
         this.outlinePass.edgeGlow = 1.0;
         this.outlinePass.edgeThickness = 3.0;
@@ -27,10 +30,10 @@ class PostProcessor {
         this.outlinePass.usePatternTexture = false; // patter texture for an object mesh
         this.outlinePass.visibleEdgeColor.set("#1abaff"); // set basic edge color
         this.outlinePass.hiddenEdgeColor.set("#1abaff");
-
-        this.effectFXAA = new ShaderPass(FXAAShader);
+        // init shader
         this.effectFXAA.uniforms['resolution'].value.set(1 / window.innerWidth, 1 / window.innerHeight);
         this.effectFXAA.renderToScreen = true;
+        // add to composer
         this.composer.addPass(this.renderPass);
         this.composer.addPass(this.outlinePass);
         this.composer.addPass(this.effectFXAA);
@@ -50,7 +53,7 @@ class PostProcessor {
         return this.selectedObject;
     }
 
-    selectObject(e, camera, objects) {
+    selectObject(e, transformControls, camera, objects) {
         var mousePointer = new Vector3(
             (e.clientX / window.innerWidth) * 2 - 1,
             -(e.clientY / window.innerHeight) * 2 + 1,
@@ -62,14 +65,14 @@ class PostProcessor {
             this.selectedObject = intersects[0].object
             if (this.selectedObject.isObject3D) {
                 this.outlinePass.selectedObjects = [this.selectedObject];
-                this.transformControls.attachObject(this.selectedObject);
+                transformControls.attachObject(this.selectedObject);
             }
 
-        } else {
+        } /* else {
             this.selectedObject = null
             this.outlinePass.selectedObjects = [];
             this.transformControls.detachObject();
-        }
+        }*/
     }
 }
 

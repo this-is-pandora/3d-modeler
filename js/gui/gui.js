@@ -1,6 +1,6 @@
 import * as dat from 'dat.gui';
 
-// the GUI controller
+// TODO: the GUI controller
 class GUI {
     constructor() {
         this.gui = new dat.GUI();

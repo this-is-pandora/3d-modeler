@@ -1,12 +1,11 @@
 import { TransformControls } from "three/examples/jsm/Addons.js";
-import { TransformControlsGizmo } from "three/examples/jsm/Addons.js";
 
 class TransformController {
-    constructor(scene, camera, renderer) {
+    constructor(camera, renderer) {
         this.controls = new TransformControls(camera, renderer.domElement);
-        scene.add(this.controls);
+        //scene.add(this.controls);
     }
-
+    i
     getController() {
         return this.controls;
     }
